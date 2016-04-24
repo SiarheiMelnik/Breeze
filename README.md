@@ -1,1 +1,1 @@
-# breeze application [![Build Status](https://travis-ci.org/yankouskia/cycle.svg?branch=master)](https://travis-ci.org/yankouskia/cycle)
+# Breeze [![Build Status](https://travis-ci.org/yankouskia/Breeze.svg?branch=master)](https://travis-ci.org/yankouskia/Breeze)
