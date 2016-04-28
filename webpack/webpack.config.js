@@ -1,7 +1,7 @@
 var path = require('path');
 var Webpack = require('webpack');
 var server = require('./utils/app-server');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var NODE_ENV = process.env.NODE_ENV;
 
@@ -21,14 +21,9 @@ module.exports = {
     },
 
     module: {
-        loaders: [{ test: /\.html/, loader: 'html-loader' },
-            {loader: "babel-loader",
-                    test: /\.(js|es)$/,
-                    query: {
-                        plugins: ['transform-runtime'],
-                        presets: ['es2015', 'stage-0'],
-                    }
-            },
+        loaders: [
+            { test: /\.html/, loader: 'html-loader' },
+            { test: /\.(js|es)$/, loader: 'babel-loader', exclude: /node_modules/ },
             //{ test: /\.(jsx|es)$/, loader: 'babel-loader?presets[]=react,presets[]=es2015,presets[]=stage-0' },
             { test: /\.json$/, loader: 'json-loader' },
             { test: /\.(png|jpg|jpeg|gif)$/, loader: 'file-loader' },

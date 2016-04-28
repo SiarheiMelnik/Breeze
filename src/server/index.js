@@ -1,8 +1,8 @@
 'use strict';
 
-require('babel-core/register');
-require("babel-polyfill");
+require('babel-register');
+require('babel-polyfill');
 
 delete process.env.BROWSER;
 
-require('./app.js').default.start();
+require('./app').start();
