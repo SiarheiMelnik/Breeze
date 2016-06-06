@@ -4,8 +4,7 @@ import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
 import ip from 'ip';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 const devtools = 'eval-source-map';
 
 const serverIp = ip.address();
@@ -18,7 +17,7 @@ const config = {
   entry: {
     app: [
       `webpack-hot-middleware/client?path=http://${serverIp}:${constants.HOT_RELOAD_PORT}/__webpack_hmr`,
-      path.join(constants.SRC_DIR, 'index.js'),
+      path.join(constants.SRC_DIR, 'browser/index.js'),
     ],
   },
   module: {
@@ -29,7 +28,7 @@ const config = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css!postcss!sass')
+        loader: 'style!css!postcss!sass',
       },
       {
         loader: 'url-loader?limit=100000',
@@ -43,21 +42,24 @@ const config = {
     ],
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.join(constants.WEBPACK_DIR, 'server/index.html'),
+      inject: 'body',
+      filename: 'index.html'
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development')
       }
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin('[name].css')
+    })
   ],
   output: {
     path: constants.BUILD_DIR,
     filename: '[name].js',
-    chunkFilename: '[name].js',
-    publicPath: '/assets/',
+    chunkFilename: '[name]-[chunkhash].js',
+    publicPath: `http://${serverIp}:${constants.HOT_RELOAD_PORT}/build/`,
   },
   postcss: () => [autoprefixer({ browsers: 'last 2 version' })],
   resolve: {

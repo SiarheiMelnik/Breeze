@@ -1,27 +1,28 @@
-
 import webpack from 'webpack';
-import webpackDev from 'webpack-dev-middleware';
-import webpackHot from 'webpack-hot-middleware';
-import config from '../dev.config';
 import koa from 'koa';
+import webpackConfig from '../dev.config';
+import webpackDev from 'koa-webpack-dev-middleware';
+import webpackHot from 'koa-webpack-hot-middleware';
 import path from 'path';
 
-const app = express();
-
-const compiler = webpack(config);
+const app = koa();
+const compiler = webpack(webpackConfig);
 
 app.use(webpackDev(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath,
-  historyApiFallback: true
+  publicPath: webpackConfig.output.publicPath
 }));
 
 app.use(webpackHot(compiler));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+app.use(function *() {
+  const filename = path.join(compiler.outputPath, 'index.html');
+  compiler.outputFileSystem.readFile(filename, (err, result) => {
+    this.type = path.extname(filename);
+    this.body = result;
+  });
 });
 
-app.listen(config.hotPort, () => {
-  console.log('Hot server started at port %d', config.hotPort); // eslint-disable-line no-console
+app.listen(webpackConfig.hotPort, () => {
+  console.log('listen dev', webpackConfig.hotPort);
 });

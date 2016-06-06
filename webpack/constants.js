@@ -8,6 +8,7 @@ const constants = Object.freeze({
   NODE_MODULES_DIR: path.join(ABSOLUTE_BASE, 'node_modules'),
   BUILD_DIR: path.join(ABSOLUTE_BASE, 'build'),
   DIST_DIR: path.join(ABSOLUTE_BASE, 'dist'),
+  WEBPACK_DIR: path.join(ABSOLUTE_BASE, 'webpack'),
   SRC_DIR: path.join(ABSOLUTE_BASE, 'src'),
   HOT_RELOAD_PORT: 3001,
 });
