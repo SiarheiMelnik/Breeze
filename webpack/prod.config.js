@@ -11,7 +11,7 @@ const config = {
   devtool: '',
   entry: {
     app: [
-      path.join(constants.SRC_DIR, 'index.js'),
+      path.join(constants.SRC_DIR, 'browser/index.js'),
     ],
   },
   module: {
