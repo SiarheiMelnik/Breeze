@@ -1,3 +1,4 @@
+import './App.scss';
 import Rx from 'rx';
 import { div, h1 } from '@cycle/dom';
 
