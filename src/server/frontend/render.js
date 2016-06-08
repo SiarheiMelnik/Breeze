@@ -9,14 +9,19 @@ import {
   body,
   div,
   script,
+  link,
   makeHTMLDriver
 } from '@cycle/dom';
 
-function wrapVTreeWithHTMLBoilerplate(context, { js }) {
+function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
   return (
     html([
       head([
         title(config.appName),
+        css ? link({
+          href: css,
+          rel: 'stylesheet'
+        }) : null
       ]),
       body([
         div('#app'),
