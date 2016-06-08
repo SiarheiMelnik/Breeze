@@ -15,14 +15,14 @@ app.use(webpackDev(compiler, {
 
 app.use(webpackHot(compiler));
 
-app.use(function *() {
-  const filename = path.join(compiler.outputPath, 'index.html');
-  compiler.outputFileSystem.readFile(filename, (err, result) => {
-    this.type = path.extname(filename);
-    this.body = result;
-  });
-});
+// app.use(function *() {
+//   const filename = path.join(compiler.outputPath, 'index.html');
+//   compiler.outputFileSystem.readFile(filename, (err, result) => {
+//     this.type = path.extname(filename);
+//     this.body = result;
+//   });
+// });
 
 app.listen(webpackConfig.hotPort, () => {
-  console.log('listen dev', webpackConfig.hotPort);
+  console.log('listen dev hot', webpackConfig.hotPort);
 });

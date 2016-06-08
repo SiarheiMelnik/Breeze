@@ -17,6 +17,7 @@
     "describe": false,
     "it": false,
     "require": false,
-    "expect": false
+    "expect": false,
+    "webpackIsomorphicTools": true
   }
 }

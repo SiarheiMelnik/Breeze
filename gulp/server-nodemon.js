@@ -5,5 +5,5 @@ import gulp from 'gulp';
 const nodemonPath = 'node_modules/.bin/nodemon';
 
 gulp.task('server-nodemon', (cb) => {
-  bg(nodemonPath, path.normalize('src/server'))(cb);
+  bg(nodemonPath, '--ignore', 'webpack-assets.json', path.normalize('src/server'))(cb);
 });

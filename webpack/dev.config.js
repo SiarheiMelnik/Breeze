@@ -4,10 +4,13 @@ import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
 import ip from 'ip';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-const devtools = 'eval-source-map';
+// import HtmlWebpackPlugin from 'html-webpack-plugin';
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
+import webpackIsomorphicAssets from './assets';
 
+const devtools = 'eval-source-map';
 const serverIp = ip.address();
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicAssets);
 
 const config = {
   hotPort: constants.HOT_RELOAD_PORT,
@@ -50,11 +53,12 @@ const config = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(constants.WEBPACK_DIR, 'server/index.html'),
-      inject: 'body',
-      filename: 'index.html'
-    }),
+    webpackIsomorphicToolsPlugin.development(),
+    // new HtmlWebpackPlugin({
+    //   template: path.join(constants.WEBPACK_DIR, 'server/index.html'),
+    //   inject: 'body',
+    //   filename: 'index.html'
+    // }),
   ],
   output: {
     path: constants.BUILD_DIR,

@@ -4,6 +4,10 @@ import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
+import webpackIsomorphicAssets from './assets';
+
+const webpackIsomorphicToolsPlugin = new WebpackIsomorphicToolsPlugin(webpackIsomorphicAssets);
 
 const config = {
   cache: false,
@@ -50,6 +54,10 @@ const config = {
         warnings: false // Because uglify reports irrelevant warnings.
       }
     }),
+    new webpack.SourceMapDevToolPlugin({
+      filename: '[file].map'
+    }),
+    webpackIsomorphicToolsPlugin,
   ],
   output: {
     path: constants.BUILD_DIR,
