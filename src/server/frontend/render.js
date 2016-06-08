@@ -16,12 +16,12 @@ function wrapVTreeWithHTMLBoilerplate(context, { js }) {
   return (
     html([
       head([
-        title('Breeze'),
+        title(config.appName),
       ]),
       body([
-        div('#root'),
+        div('#app'),
         script(`window.__APP__CONTEXT__ = ${serialize(context)};`),
-        script(js)
+        script({ src: js })
       ])
     ])
   );
