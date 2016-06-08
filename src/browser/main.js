@@ -17,6 +17,11 @@ const drivers = {
 const { sinks, sources } = run(App, drivers);
 
 if (module.hot) {
+  module.hot.dispose(() => {
+    sinks.dispose();
+    sources.dispose();
+  });
+
   module.hot.accept('./components/App', () => {
     const app = require('./components/App');
     restart(app, drivers, { sinks, sources }, isolate);
