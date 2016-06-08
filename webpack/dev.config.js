@@ -54,11 +54,6 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     webpackIsomorphicToolsPlugin.development(),
-    // new HtmlWebpackPlugin({
-    //   template: path.join(constants.WEBPACK_DIR, 'server/index.html'),
-    //   inject: 'body',
-    //   filename: 'index.html'
-    // }),
   ],
   output: {
     path: constants.BUILD_DIR,
