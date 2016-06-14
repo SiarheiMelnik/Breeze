@@ -4,7 +4,6 @@ import autoprefixer from 'autoprefixer';
 import constants from './constants';
 import path from 'path';
 import ip from 'ip';
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
 import WebpackIsomorphicToolsPlugin from 'webpack-isomorphic-tools/plugin';
 import webpackIsomorphicAssets from './assets';
 
