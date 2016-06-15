@@ -1,8 +1,16 @@
-'use strict';
 
-require('babel-core/register');
-require("babel-polyfill");
+require('babel-register');
+require('babel-polyfill');
 
-delete process.env.BROWSER;
+const WebpackIsomorphicTools = require('webpack-isomorphic-tools');
+const config = require('./config');
+const rootDir = require('path').resolve(__dirname, '..', '..');
+const webpackIsomorphicAssets = require('../../webpack/assets');
 
-require('./app.js').default.start();
+global.Promise = require('../common/bootstrapBluebird');
+
+global.webpackIsomorphicTools = new WebpackIsomorphicTools(webpackIsomorphicAssets)
+  .development(!config.isProduction)
+  .server(rootDir, () => {
+    require('./main');
+  });
