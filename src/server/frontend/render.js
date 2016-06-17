@@ -13,8 +13,9 @@ import {
   meta,
   makeHTMLDriver
 } from '@cycle/dom';
+import App from '../../browser/components/App';
 
-function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
+function wrapVTreeWithHTMLBoilerplate(vtree, context, { js, css }) {
   return (
     html({ lang: 'en' }, [
       head([
@@ -27,7 +28,9 @@ function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
         }) : null
       ]),
       body([
-        div('#app'),
+        div('#app', [
+          vtree
+        ]),
         script(`window.__APP__CONTEXT__ = ${serialize(context)};`),
         script({ src: js })
       ])
@@ -35,9 +38,11 @@ function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
   );
 }
 
-function wrapAppResultWithBoilerplate(context$, bundle$) {
-  return function wrappedAppFn() {
+function wrapAppResultWithBoilerplate(appFn, context$, bundle$) {
+  return function wrappedAppFn(sources) {
+    const vtree$ = appFn(sources).DOM;
     const wrappedVTree$ = Observable.combineLatest(
+      vtree$,
       context$,
       bundle$,
       wrapVTreeWithHTMLBoilerplate
@@ -67,7 +72,7 @@ export default () => function * render() {
   const context$ = Observable.just({ route: ctx.req.url });
   const clientBundle$ = Observable.just({ css: cssFilename, js: jSFilename });
 
-  const wrappedAppFn = wrapAppResultWithBoilerplate(context$, clientBundle$);
+  const wrappedAppFn = wrapAppResultWithBoilerplate(App, context$, clientBundle$);
 
   const { sources } = run(wrappedAppFn, {
     DOM: makeHTMLDriver(),
