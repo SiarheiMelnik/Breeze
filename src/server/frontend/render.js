@@ -42,6 +42,7 @@ function wrapAppResultWithBoilerplate(context$, bundle$) {
       bundle$,
       wrapVTreeWithHTMLBoilerplate
     );
+
     return {
       DOM: wrappedVTree$
     };
@@ -65,11 +66,14 @@ export default () => function * render() {
 
   const context$ = Observable.just({ route: ctx.req.url });
   const clientBundle$ = Observable.just({ css: cssFilename, js: jSFilename });
+
   const wrappedAppFn = wrapAppResultWithBoilerplate(context$, clientBundle$);
+
   const { sources } = run(wrappedAppFn, {
     DOM: makeHTMLDriver(),
     context: () => context$
   });
+
   const html$ = sources.DOM.map(data => `<!doctype html>${data}`);
-  ctx.body = yield new Promise((resolve) => html$.subscribe(res => resolve(res)));
+  ctx.body = yield html$.toPromise(Promise);
 };
