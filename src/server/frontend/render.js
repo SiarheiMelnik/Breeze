@@ -76,6 +76,7 @@ export default () => function * render() {
 
   const { sources } = run(wrappedAppFn, {
     DOM: makeHTMLDriver(),
+    History: Observable.just(ctx.req.url),
     context: () => context$
   });
 

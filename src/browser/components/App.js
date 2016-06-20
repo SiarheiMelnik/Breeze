@@ -1,31 +1,28 @@
 import './App.scss';
-import { Observable } from 'rx';
+import { Observable as $ } from 'rx';
 import { h } from '@cycle/dom';
 import Sidebar from './Sidebar';
-import Content from './Content';
+import createRouter from '../createRouter';
+
+const view = (sidebar, content) =>
+  h('div#layout .pure-g', [
+    h('div.sidebar pure-u-1 pure-u-md-1-4', [sidebar]),
+    h('div.content pure-u-1 pure-u-md-3-4', [content])
+  ]);
 
 function App(sources) {
   const sidebar = Sidebar(sources);
-  const content = Content(sources);
+  const content = createRouter(sources);
 
-  const view = () => {
-    const sidebarVtree$ = sidebar.DOM;
-    const contentVtree$ = content.DOM;
-    return Observable.combineLatest(
-      sidebarVtree$,
-      contentVtree$,
-      (sidebarVtree, contentVtree) =>
-        h('div#layout .pure-g', [
-          sidebarVtree,
-          contentVtree
-        ])
-    );
-  };
-
-  const view$ = view();
+  const view$ = $.just(
+    view(
+      sidebar.DOM,
+      content.DOM
+    )
+  );
 
   return {
-    DOM: view$
+    DOM: view$,
   };
 }
 
