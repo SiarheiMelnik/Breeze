@@ -13,7 +13,7 @@ import App from './components/App';
 
 const drivers = {
   DOM: restartable(makeDOMDriver('#app'), { pauseSinksWhileReplaying: false }),
-  router: makeRouter5Driver(createRouter(routes, 'HOME')),
+  router: makeRouter5Driver(createRouter(routes, 'home')),
   context: () => $.just(window.__APP__CONTEXT__),
 };
 

@@ -5,6 +5,7 @@ export default function createRouter(routes, defaultRoute) {
   return new Router5()
       .add(routes)
       .setOption('useHash', false)
+      .setOption('trailingSlash', true)
       .setOption('defaultRoute', defaultRoute)
       .usePlugin(loggerPlugin())
       .usePlugin(historyPlugin());
