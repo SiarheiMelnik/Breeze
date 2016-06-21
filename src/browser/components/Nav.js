@@ -15,7 +15,7 @@ export default function Nav(sources) {
           className: routerSource.isActive('hello') ? 'active' : ''
         }, 'Hello')
       ])
-    );
+    ).startWith();
 
   return {
     DOM: nav$

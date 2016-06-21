@@ -22,11 +22,10 @@ function App(sources) {
   const routerInstructions$ = viewport.router;
   const router$ = $.merge(navigationInstruction$, routerInstructions$);
 
-  const view$ = $.just(
-    view(
-      sidebar.DOM,
-      viewport.DOM
-    )
+  const view$ = $.combineLatest(
+    sidebar.DOM,
+    viewport.DOM,
+    view
   );
 
   return {

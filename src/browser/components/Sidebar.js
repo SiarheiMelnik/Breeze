@@ -14,7 +14,7 @@ export default function Sidebar(sources) {
   const nav$ = Nav(sources);
 
   const vtree$ = $.just(
-    view(nav$.DOM.startWith())
+    view(nav$.DOM)
   );
 
   return {
