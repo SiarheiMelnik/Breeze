@@ -6,9 +6,9 @@ import Viewport from './Viewport';
 import { shouldInterceptEvent, onClick } from '../router5/link-on-click';
 
 const view = (sidebar, content) =>
-  h('div#layout .pure-g', [
-    h('div.sidebar pure-u-1 pure-u-md-1-4', [sidebar]),
-    h('div.content pure-u-1 pure-u-md-3-4', [content])
+  h('div#layout.pure-g', [
+    h('div.sidebar.pure-u-1.pure-u-md-1-4', [sidebar]),
+    h('div.content.pure-u-1.pure-u-md-3-4', [content])
   ]);
 
 function App(sources) {
