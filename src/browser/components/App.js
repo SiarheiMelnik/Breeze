@@ -2,7 +2,8 @@ import './App.scss';
 import { Observable as $ } from 'rx';
 import { h } from '@cycle/dom';
 import Sidebar from './Sidebar';
-import createRouter from '../createRouter';
+import Viewport from './Viewport';
+import { shouldInterceptEvent, onClick } from '../router5/link-on-click';
 
 const view = (sidebar, content) =>
   h('div#layout .pure-g', [
@@ -11,18 +12,26 @@ const view = (sidebar, content) =>
   ]);
 
 function App(sources) {
+  const navigationInstruction$ = $.fromEvent(document, 'click', 'a')
+    .filter(shouldInterceptEvent(sources.router))
+    .map(onClick(sources.router));
+
   const sidebar = Sidebar(sources);
-  const content = createRouter(sources);
+  const viewport = Viewport(sources);
+
+  const routerInstructions$ = viewport.router;
+  const router$ = $.merge(navigationInstruction$, routerInstructions$);
 
   const view$ = $.just(
     view(
       sidebar.DOM,
-      content.DOM
+      viewport.DOM
     )
   );
 
   return {
     DOM: view$,
+    router: router$
   };
 }
 

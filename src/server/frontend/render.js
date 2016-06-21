@@ -1,5 +1,5 @@
 import config from '../config';
-import { Observable } from 'rx';
+import { Observable as $ } from 'rx';
 import { run } from '@cycle/core';
 import serialize from 'serialize-javascript';
 import {
@@ -13,9 +13,9 @@ import {
   meta,
   makeHTMLDriver
 } from '@cycle/dom';
-import App from '../../browser/components/App';
+// import App from '../../browser/components/App';
 
-function wrapVTreeWithHTMLBoilerplate(vtree, context, { js, css }) {
+function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
   return (
     html({ lang: 'en' }, [
       head([
@@ -29,7 +29,7 @@ function wrapVTreeWithHTMLBoilerplate(vtree, context, { js, css }) {
       ]),
       body([
         div('#app', [
-          vtree
+          // vtree
         ]),
         script(`window.__APP__CONTEXT__ = ${serialize(context)};`),
         script({ src: js })
@@ -38,11 +38,10 @@ function wrapVTreeWithHTMLBoilerplate(vtree, context, { js, css }) {
   );
 }
 
-function wrapAppResultWithBoilerplate(appFn, context$, bundle$) {
-  return function wrappedAppFn(sources) {
-    const vtree$ = appFn(sources).DOM;
-    const wrappedVTree$ = Observable.combineLatest(
-      vtree$,
+function wrapAppResultWithBoilerplate(context$, bundle$) {
+  return function wrappedAppFn() {
+    // const vtree$ = appFn(sources).DOM;
+    const wrappedVTree$ = $.combineLatest(
       context$,
       bundle$,
       wrapVTreeWithHTMLBoilerplate
@@ -69,14 +68,13 @@ export default () => function * render() {
 
   console.log(`==> Req: ${ctx.method} ${ctx.url}`);
 
-  const context$ = Observable.just({ route: ctx.req.url });
-  const clientBundle$ = Observable.just({ css: cssFilename, js: jSFilename });
+  const context$ = $.just({ route: ctx.req.url });
+  const clientBundle$ = $.just({ css: cssFilename, js: jSFilename });
 
-  const wrappedAppFn = wrapAppResultWithBoilerplate(App, context$, clientBundle$);
+  const wrappedAppFn = wrapAppResultWithBoilerplate(context$, clientBundle$);
 
   const { sources } = run(wrappedAppFn, {
     DOM: makeHTMLDriver(),
-    History: Observable.just(ctx.req.url),
     context: () => context$
   });
 
