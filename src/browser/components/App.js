@@ -1,21 +1,37 @@
 import './App.scss';
-import Rx from 'rx';
-import { div, h1 } from '@cycle/dom';
+import { Observable as $ } from 'rx';
+import { h } from '@cycle/dom';
+import Sidebar from './Sidebar';
+import Viewport from './Viewport';
+import { shouldInterceptEvent, onClick } from '../router5/link-on-click';
 
-function App() {
-  const view = function () {
-    return div('#app .pure-g', [
-      h1('.title', ['APP'])
-    ]);
-  };
+const view = (sidebar, content) =>
+  h('div#layout.pure-g', [
+    h('div.sidebar.pure-u-1.pure-u-md-1-4', [sidebar]),
+    h('div.content.pure-u-1.pure-u-md-3-4', [content])
+  ]);
 
-  const view$ = Rx.Observable.just(
-    view()
+function App(sources) {
+  const navigationInstruction$ = $.fromEvent(document, 'click', 'a')
+    .filter(shouldInterceptEvent(sources.router))
+    .map(onClick(sources.router));
+
+  const sidebar = Sidebar(sources);
+  const viewport = Viewport(sources);
+
+  const routerInstructions$ = viewport.router;
+  const router$ = $.merge(navigationInstruction$, routerInstructions$);
+
+  const view$ = $.combineLatest(
+    sidebar.DOM,
+    viewport.DOM,
+    view
   );
-  const sinks = {
+
+  return {
     DOM: view$,
+    router: router$
   };
-  return sinks;
 }
 
 export default App;

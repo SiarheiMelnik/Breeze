@@ -3,19 +3,18 @@ eslint no-underscore-dangle:0
 */
 import { run } from '@cycle/core';
 import { makeDOMDriver } from '@cycle/dom';
+import { Observable as $ } from 'rx';
 import { isolate } from '@cycle/isolate';
-import { Observable } from 'rx';
-// import { makeHistoryDriver } from '@cycle/history';
-// import { useQueries, createHistory } from 'history';
+import makeRouter5Driver from './router5/driver';
+import createRouter from './create-router';
+import routes from './routes';
 import { restart, restartable } from 'cycle-restart';
 import App from './components/App';
 
-// const history = useQueries(createHistory)();
-
 const drivers = {
   DOM: restartable(makeDOMDriver('#app'), { pauseSinksWhileReplaying: false }),
-  context: () => Observable.just(window.__APP__CONTEXT__),
-  // History: makeHistoryDriver(history),
+  router: makeRouter5Driver(createRouter(routes, 'home')),
+  context: () => $.just(window.__APP__CONTEXT__),
 };
 
 const { sinks, sources } = run(App, drivers);

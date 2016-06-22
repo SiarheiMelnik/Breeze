@@ -1,5 +1,5 @@
 import config from '../config';
-import { Observable } from 'rx';
+import { Observable as $ } from 'rx';
 import { run } from '@cycle/core';
 import serialize from 'serialize-javascript';
 import {
@@ -10,13 +10,17 @@ import {
   div,
   script,
   link,
+  meta,
   makeHTMLDriver
 } from '@cycle/dom';
+// import App from '../../browser/components/App';
 
 function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
   return (
-    html([
+    html({ lang: 'en' }, [
       head([
+        meta({ charset: 'utf-8' }),
+        meta({ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
         title(config.appName),
         css ? link({
           href: css,
@@ -24,7 +28,9 @@ function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
         }) : null
       ]),
       body([
-        div('#app'),
+        div('#app', [
+          // vtree
+        ]),
         script(`window.__APP__CONTEXT__ = ${serialize(context)};`),
         script({ src: js })
       ])
@@ -34,11 +40,13 @@ function wrapVTreeWithHTMLBoilerplate(context, { js, css }) {
 
 function wrapAppResultWithBoilerplate(context$, bundle$) {
   return function wrappedAppFn() {
-    const wrappedVTree$ = Observable.combineLatest(
+    // const vtree$ = appFn(sources).DOM;
+    const wrappedVTree$ = $.combineLatest(
       context$,
       bundle$,
       wrapVTreeWithHTMLBoilerplate
     );
+
     return {
       DOM: wrappedVTree$
     };
@@ -60,13 +68,16 @@ export default () => function * render() {
 
   console.log(`==> Req: ${ctx.method} ${ctx.url}`);
 
-  const context$ = Observable.just({ route: ctx.req.url });
-  const clientBundle$ = Observable.just({ css: cssFilename, js: jSFilename });
+  const context$ = $.just({ route: ctx.req.url });
+  const clientBundle$ = $.just({ css: cssFilename, js: jSFilename });
+
   const wrappedAppFn = wrapAppResultWithBoilerplate(context$, clientBundle$);
+
   const { sources } = run(wrappedAppFn, {
     DOM: makeHTMLDriver(),
     context: () => context$
   });
+
   const html$ = sources.DOM.map(data => `<!doctype html>${data}`);
-  ctx.body = yield new Promise((resolve) => html$.subscribe(res => resolve(res)));
+  ctx.body = yield html$.toPromise(Promise);
 };
