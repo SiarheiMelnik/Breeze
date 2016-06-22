@@ -8,9 +8,7 @@
     "new-cap": [2, {"capIsNew": false, "newIsCap": true}],
     "no-class-assign": 0,
     "no-confusing-arrow": 0,
-  },
-  "settings": {
-    "import/ignore": "node_modules"
+    "import/no-unresolved": 1
   },
   "globals": {
     "after": false,
