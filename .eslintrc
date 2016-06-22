@@ -10,6 +10,9 @@
     "no-confusing-arrow": 0,
     "import/no-unresolved": 0
   },
+  "settings": {
+    "import/ignore": "node_modules" 
+  },
   "globals": {
     "after": false,
     "afterEach": false,
