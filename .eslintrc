@@ -8,7 +8,7 @@
     "new-cap": [2, {"capIsNew": false, "newIsCap": true}],
     "no-class-assign": 0,
     "no-confusing-arrow": 0,
-    "import/no-unresolved": 1
+    "import/no-unresolved": 0
   },
   "globals": {
     "after": false,
