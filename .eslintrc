@@ -1,6 +1,6 @@
 {
-  "parser"  : "babel-eslint",
-  "extends" : ["airbnb"],
+  "parser": "babel-eslint",
+  "extends": ["airbnb"],
   "rules": {
     "comma-dangle": 0,
     "default-case": 0,
