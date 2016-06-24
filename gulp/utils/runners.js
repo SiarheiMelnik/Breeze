@@ -18,8 +18,7 @@ const mochaRun = (file) => {
     }
   }
 
-  console.log(`Running ${source}`);
-  gulp.src(source, { read: false })
+  return gulp.src(source, { read: false })
     .pipe(mocha({
       require: ['./resources/mochaSetup.js'],
       reporter: 'spec'
