@@ -7,6 +7,7 @@
     "build": "gulp build",
     "dev": "gulp",
     "test": "gulp test",
+    "test:watch": "gulp mocha-watch",
     "postinstall": "gulp build"
   },
   "engines": {
