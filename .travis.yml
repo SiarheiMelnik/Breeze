@@ -1,5 +1,4 @@
 language: node_js
 node_js:
   - 4.4.5
-after_success:
-  - coveralls
+after_success: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
