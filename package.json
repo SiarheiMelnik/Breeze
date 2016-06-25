@@ -6,6 +6,7 @@
     "prebuild": "gulp test",
     "build": "gulp build",
     "dev": "gulp",
+    "start": "dev",
     "test": "gulp test",
     "test:watch": "gulp mocha-watch",
     "postinstall": "gulp build"
