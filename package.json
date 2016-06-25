@@ -8,7 +8,8 @@
     "dev": "gulp",
     "test": "gulp test",
     "test:watch": "gulp mocha-watch",
-    "postinstall": "gulp build"
+    "postinstall": "gulp build",
+    "gulp": "gulp"
   },
   "engines": {
     "node": "=4"
@@ -77,6 +78,7 @@
     "extract-text-webpack-plugin": "1.0.1",
     "gulp": "3.9.1",
     "gulp-bg": "0.0.8",
+    "gulp-cli": "1.2.1",
     "gulp-eslint": "2.0.0",
     "gulp-istanbul": "1.0.0",
     "gulp-mocha": "2.2.0",
