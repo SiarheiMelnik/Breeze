@@ -8,8 +8,7 @@
     "dev": "gulp",
     "test": "gulp test",
     "test:watch": "gulp mocha-watch",
-    "postinstall": "gulp build",
-    "gulp": "gulp"
+    "postinstall": "gulp build"
   },
   "engines": {
     "node": "=4"
